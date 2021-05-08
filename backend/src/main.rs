@@ -1,5 +1,3 @@
-use dotenv;
-
 use async_trait::async_trait;
 use payloads::*;
 use shared::*;
@@ -32,7 +30,7 @@ async fn main() {
 
 pub async fn make_db_pool() -> PgPool {
     let db_url = std::env::var("DATABASE_URL").unwrap();
-    Pool::new(&db_url).await.unwrap()
+    Pool::connect(&db_url).await.unwrap()
 }
 
 async fn server(db_pool: PgPool) -> Server<State> {
@@ -143,5 +141,6 @@ where
         Method::Options => route.options(handler),
         Method::Trace => route.trace(handler),
         Method::Patch => route.patch(handler),
+        _ => unimplemented!(),
     };
 }

@@ -4,7 +4,6 @@ use crate::responses::BuildApiResponse;
 use crate::{BackendApiEndpoint, State};
 use argonautica::{Hasher, Verifier};
 use async_trait::async_trait;
-use chrono::prelude::*;
 use failure::Fail;
 use futures::compat::Compat01As03;
 use rand::distributions::Alphanumeric;
@@ -70,7 +69,11 @@ impl BackendApiEndpoint for CreateUser {
         .await?;
         let user_id = row.id;
 
-        let raw_token: String = OsRng.sample_iter(&Alphanumeric).take(32).collect();
+        let raw_token: String = OsRng
+            .sample_iter(&Alphanumeric)
+            .map(char::from)
+            .take(32)
+            .collect();
         let token = query!(
             r#"
                     insert into auth_tokens (
@@ -109,7 +112,7 @@ impl BackendApiEndpoint for Login {
         req: Request<State>,
         payload: LoginPayload,
     ) -> tide::Result<(<Self as ApiEndpoint>::Response, StatusCode)> {
-        let username = req.param::<String>("username")?;
+        let username = req.param("username")?;
         let password = payload.password;
 
         let db_pool = req.state().db_pool.clone();
@@ -164,7 +167,7 @@ impl BackendApiEndpoint for Login {
 pub async fn follow(req: Request<State>) -> tide::Result {
     let db_pool = req.state().db_pool.clone();
     let current_user = authenticate(&req).await?;
-    let username = req.param::<String>("username")?;
+    let username = req.param("username")?;
 
     let row = query!("select id from users where username = $1", username)
         .fetch_optional(&db_pool)
@@ -200,7 +203,7 @@ pub async fn follow(req: Request<State>) -> tide::Result {
     .execute(&db_pool)
     .await?;
 
-    if rows_inserted == 1 {
+    if rows_inserted.rows_affected() == 1 {
         Value::Null.to_response_with_status(StatusCode::Created)
     } else {
         todo!()
@@ -209,7 +212,7 @@ pub async fn follow(req: Request<State>) -> tide::Result {
 
 pub async fn following(req: Request<State>) -> tide::Result {
     let db_pool = req.state().db_pool.clone();
-    let username = req.param::<String>("username")?;
+    let username = req.param("username")?;
 
     // TODO: extract this into function
     let row = query!("select id from users where username = $1", username)
@@ -236,7 +239,7 @@ pub async fn following(req: Request<State>) -> tide::Result {
 
 pub async fn followers(req: Request<State>) -> tide::Result {
     let db_pool = req.state().db_pool.clone();
-    let username = req.param::<String>("username")?;
+    let username = req.param("username")?;
 
     let row = query!("select id from users where username = $1", username)
         .fetch_optional(&db_pool)
@@ -286,7 +289,7 @@ impl BackendApiEndpoint for GetUser {
         _: NoPayload,
     ) -> tide::Result<(UserResponse, StatusCode)> {
         let db_pool = &req.state().db_pool;
-        let username = req.param::<String>("username")?;
+        let username = req.param("username")?;
 
         let user = query_as!(
             UserResponse,

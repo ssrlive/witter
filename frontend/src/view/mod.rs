@@ -18,7 +18,7 @@ fn view_page(model: &Model) -> Node<Msg> {
     }
 }
 
-fn timeline(model: &Model, tweets: &PageData<Vec<TweetResponse>>) -> Node<Msg> {
+fn timeline(_model: &Model, tweets: &PageData<Vec<TweetResponse>>) -> Node<Msg> {
     match tweets {
         PageData::NotLoaded => p!["Loading..."],
         PageData::Loaded(tweets) => {

@@ -57,7 +57,7 @@ impl Url for PostTweetUrl {
     const URL_SPEC: &'static str = "/tweets";
 
     fn url(&self) -> String {
-        format!("/tweets")
+        "/tweets".to_string()
     }
 }
 
@@ -76,7 +76,7 @@ impl Url for MeUrl {
     const URL_SPEC: &'static str = "/me";
 
     fn url(&self) -> String {
-        format!("/me")
+        "/me".to_string()
     }
 }
 
@@ -116,7 +116,7 @@ impl Url for CreateUserUrl {
     const URL_SPEC: &'static str = "/users";
 
     fn url(&self) -> String {
-        format!("/users")
+        "/users".to_string()
     }
 }
 
@@ -135,6 +135,6 @@ impl Url for TimelineUrl {
     const URL_SPEC: &'static str = "/me/timeline";
 
     fn url(&self) -> String {
-        format!("/me/timeline")
+        "/me/timeline".to_string()
     }
 }

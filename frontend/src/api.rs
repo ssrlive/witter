@@ -1,12 +1,12 @@
-use crate::{Error, Model, Msg};
+use crate::{Error, Msg};
 use payloads::{CreateTweetPayload, LoginPayload};
-use seed::{prelude::*, *};
+use seed::prelude::*;
 use shared::payloads::CreateUserPayload;
-use shared::responses::{ApiResponse, TokenResponse, UserResponse};
+use shared::responses::ApiResponse;
 use shared::Url as _;
 use shared::*;
 
-const API_URL: &'static str = "http://localhost:8080";
+const API_URL: &str = "http://localhost:8080";
 
 pub async fn create_user(username: String, password: String) -> Msg {
     fetch::<CreateUser>(
@@ -113,6 +113,7 @@ fn convert_method(method: http_types::Method) -> seed::browser::fetch::Method {
         http_types::Method::Options => seed::browser::fetch::Method::Options,
         http_types::Method::Trace => seed::browser::fetch::Method::Trace,
         http_types::Method::Patch => seed::browser::fetch::Method::Patch,
+        _ => unimplemented!(),
     }
 }
 

@@ -178,7 +178,7 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
         }
         Msg::LoginEndpointResponded(token) => {
             model.set_auth_token(&token);
-            orders.perform_cmd(api::reload_current_user(token.to_string()));
+            orders.perform_cmd(api::reload_current_user(token));
             Page::SignedIn.go(model, orders);
         }
 
@@ -190,7 +190,7 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
         }
         Msg::CreateUserEndpointResponded(token) => {
             model.set_auth_token(&token);
-            orders.perform_cmd(api::reload_current_user(token.to_string()));
+            orders.perform_cmd(api::reload_current_user(token));
             Page::SignedIn.go(model, orders);
         }
 

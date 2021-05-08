@@ -8,7 +8,6 @@ use crate::{make_db_pool, server};
 use futures::{executor::block_on, prelude::*};
 use serde::de::DeserializeOwned;
 use serde::Serialize;
-use sqlx::prelude::Connect;
 use sqlx::PgConnection;
 use sqlx::PgPool;
 use sqlx::Postgres;

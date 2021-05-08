@@ -1,5 +1,4 @@
 use crate::endpoints::authenticate;
-use crate::responses::BuildApiResponse;
 use crate::BackendApiEndpoint;
 use crate::State;
 use async_trait::async_trait;
@@ -8,7 +7,7 @@ use shared::{
     responses::{TweetResponse, UserResponse},
     ApiEndpoint, Me, NoPayload, Timeline,
 };
-use sqlx::{query, query_as};
+use sqlx::query;
 use tide::{Request, StatusCode};
 
 #[async_trait]

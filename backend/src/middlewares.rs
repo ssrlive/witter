@@ -1,11 +1,4 @@
-use crate::State;
-use futures::future::BoxFuture;
 use serde_json::json;
-use std::future::Future;
-use std::pin::Pin;
-use tide::http::headers::HeaderValue;
-use tide::http::{headers, Method, StatusCode};
-use tide::security::Origin;
 use tide::Middleware;
 use tide::Next;
 use tide::Request;
@@ -33,9 +26,7 @@ impl<State: Clone + Send + Sync + 'static> Middleware<State> for ErrorReponseToJ
         } else {
             let status = resp.status();
 
-            if status.is_success() {
-                Ok(resp)
-            } else {
+            if !status.is_success() {
                 let body = resp.take_body();
 
                 if body.is_empty().expect("no length on response body") {
@@ -49,9 +40,8 @@ impl<State: Clone + Send + Sync + 'static> Middleware<State> for ErrorReponseToJ
                 } else {
                     resp.set_body(body);
                 }
-
-                Ok(resp)
             }
+            Ok(resp)
         }
     }
 }

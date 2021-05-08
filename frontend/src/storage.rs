@@ -2,7 +2,7 @@ use seed::browser::web_storage::LocalStorage;
 use seed::browser::web_storage::WebStorage;
 use seed::browser::web_storage::WebStorageError;
 
-const AUTH_TOKEN_KEY: &'static str = "auth_token";
+const AUTH_TOKEN_KEY: &str = "auth_token";
 
 pub fn set_auth_token(token: &str) {
     LocalStorage::insert(AUTH_TOKEN_KEY, token).unwrap();

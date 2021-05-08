@@ -7,10 +7,7 @@ pub enum Env {
 
 impl Env {
     pub fn is_test(&self) -> bool {
-        match self {
-            Env::Test => true,
-            _ => false,
-        }
+        matches!(self, Env::Test)
     }
 }
 

@@ -1,7 +1,6 @@
-use sqlx::prelude::Connect;
-use sqlx::PgConnection;
 use sqlx::PgPool;
 use sqlx::Postgres;
+use sqlx::{Connection, PgConnection};
 use std::env;
 
 #[derive(Debug)]
@@ -17,7 +16,7 @@ impl TestDb {
         create_db(&db_url).await;
         run_migrations(&db_url).await;
 
-        let db_pool = PgPool::new(&db_url).await.unwrap();
+        let db_pool = PgPool::connect(&db_url).await.unwrap();
 
         Self {
             db_url,
@@ -44,7 +43,11 @@ fn db_url() -> String {
 
     // Set up the database per tests
     let rng = thread_rng();
-    let suffix: String = rng.sample_iter(&Alphanumeric).take(16).collect();
+    let suffix: String = rng
+        .sample_iter(&Alphanumeric)
+        .map(char::from)
+        .take(16)
+        .collect();
     let db_url = env::var("DATABASE_URL").expect("DATABASE_URL missing from environment.");
     format!("{}_{}", db_url, suffix)
 }

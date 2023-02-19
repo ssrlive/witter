@@ -74,7 +74,7 @@ pub enum Page {
 impl Page {
     fn go(self, model: &mut Model, orders: &mut impl Orders<Msg>) {
         let url = self.to_string().parse::<Url>().expect("not a URL");
-        seed::browser::service::routing::push_route(url);
+        // seed::browser::service::routing::push_route(url);
 
         self.load_data(orders);
         model.page = self;

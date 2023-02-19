@@ -18,11 +18,11 @@ pub fn get_auth_token() -> Option<String> {
             WebStorageError::GetStorageError(_) => panic!("GetStorageError"),
             WebStorageError::StorageNotFoundError => panic!("StorageNotFoundError"),
             WebStorageError::ClearError(_) => panic!("ClearError"),
-            WebStorageError::GetlengthError(_) => panic!("GetlengthError"),
+            WebStorageError::GetLengthError(_) => panic!("GetLengthError"),
             WebStorageError::RemoveError(_) => panic!("RemoveError"),
             WebStorageError::GetError(_) => panic!("GetError"),
             WebStorageError::InsertError(_) => panic!("InsertError"),
-            WebStorageError::SerdeError(_) => panic!("SerdeError"),
+            WebStorageError::JsonError(_) => panic!("JsonError"),
         },
     }
 }

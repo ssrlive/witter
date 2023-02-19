@@ -29,7 +29,7 @@ impl BackendApiEndpoint for CreateUser {
     ) -> tide::Result<(<Self as ApiEndpoint>::Response, StatusCode)> {
         let db_pool = &req.state().db_pool;
 
-        if username_already_claimed(&create_user.username, &db_pool).await? {
+        if username_already_claimed(&create_user.username, db_pool).await? {
             return Err(Error::from_str(
                 StatusCode::UnprocessableEntity,
                 "Username is already claimed",

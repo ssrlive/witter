@@ -175,7 +175,7 @@ async fn response_includes_user_who_posted_tweet() {
         .await
         .token;
 
-    let time = Utc.ymd(1970, 1, 1).and_hms(0, 1, 1);
+    let time = Utc.with_ymd_and_hms(1970, 1, 1, 0, 1, 1).unwrap();
     freeze_time::<(), _, _>(time, || async {
         post_tweet("foo", &token, &server).await;
     })
